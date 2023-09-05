@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-$g#4&hk0s^-+58qldtqx6exhcv*&wm2fbmhorr8^54_qv8hoe8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'cossich-chat-backend-87ab3da14cd7.herokuapp.com',
+    'localhost'
+]
 
 
 # Application definition
