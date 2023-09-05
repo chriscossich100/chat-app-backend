@@ -112,11 +112,16 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cossichbackend',
-        'USER': 'postgres',
-        'PASSWORD': 'Gugu9000!',
-        'HOST': 'localhost',
-        'PORT': '5432' #this is the default port to run the postgres database
+        # 'NAME': 'cossichbackend',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'Gugu9000!',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432' #this is the default port to run the postgres database
+        'HOST': 'ec2-35-169-11-108.compute-1.amazonaws.com',
+        'NAME': 'd77dsenqmelgoa',
+        'USER': 'qfdcivanfotsht',
+        'PASSWORD': '0373b9d58162b0b7539517d67669d86330f78c191c77905c12c87d4542a61852',
+        'PORT': '5432'
     }
 }
 
