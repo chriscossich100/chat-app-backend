@@ -24,6 +24,7 @@ class ChatRoom(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=350)
+    nameslug = models.CharField(max_length=300)
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE, related_name='createdBy')
     def __str__(self):
         return f"{self.name}" 

@@ -92,6 +92,8 @@ class CreateChatRoom2(APIView):
             #since we need to get the user information we first get the username of the token and then get the user object that matches the username.
             token = Token.objects.get(key=sentToken)
             gottenUser = User.objects.get(username=token.user)
+
+            print(f'the created room is: {data.get("nameslug")}')
             
             #because an object can not exist, we need to catch the exception correctly:
             try:
@@ -101,7 +103,7 @@ class CreateChatRoom2(APIView):
                 return Response({'createdRoomFound': True})
             
             except ObjectDoesNotExist:
-                chatroomserializer2 = ChatRoomSerializer(data={'name': data.get('name'), 'description': data.get('description'), 'createdBy': {'username': gottenUser.username, 'email': gottenUser.email, 'password': gottenUser.password}})
+                chatroomserializer2 = ChatRoomSerializer(data={'name': data.get('name'), 'nameslug': data.get('nameslug'), 'description': data.get('description'), 'createdBy': {'username': gottenUser.username, 'email': gottenUser.email, 'password': gottenUser.password}})
 
                 if chatroomserializer2.is_valid():
                     submittedChatRoom = chatroomserializer2.save()
@@ -143,13 +145,14 @@ class GettingMessages(APIView):
     def get(self, request, *args, **kwargs):
 
         #get specific chat room:
-        specific_chat_room = kwargs['messagesinchat'].replace('-', ' ')
+        specific_chat_room = kwargs['messagesinchat']
+        print(f'when trying to get the string we get: {specific_chat_room}')
         try:
             #check to see if certain chat room exists: if it doesn't run the exception
-            ChatRoom.objects.get(name=specific_chat_room)
-
-            quickfilter = Messages.objects.filter(chatroom__name = specific_chat_room)
-       
+            chatroom = ChatRoom.objects.get(nameslug=specific_chat_room)
+            print(chatroom.name)
+            quickfilter = Messages.objects.filter(chatroom__name = chatroom.name)
+            print(quickfilter)
 
             #this makes sure to send which user you're currently logged in as to arrange the messages appropriately. 
             authToken = request.headers['Authorization'].replace('Token ', '')
@@ -170,13 +173,13 @@ class CreateMessages(APIView):
 
     def post (self, request, *args, **kwargs):
         data = request.POST
-        specific_chat_room = kwargs['chatroom'].replace('-', ' ')
+        specific_chat_room = kwargs['chatroom']
         sentToken = request.headers['Authorization'].replace('Token ', '')
 
         token = Token.objects.get(key=sentToken)
-        getChatRoom = ChatRoom.objects.get(name=specific_chat_room)
+        getChatRoom = ChatRoom.objects.get(nameslug=specific_chat_room)
         gottenUser = User.objects.get(username=token.user)
-        getMessageSeralizer = MessagesSerializer(data = {'message': data.get('message'), 'author': str(token.user), 'chatroom': {'name': getChatRoom.name, 'description': getChatRoom.description,'createdBy': {'username': gottenUser.username, 'email': gottenUser.email, 'password': gottenUser.password}}})
+        getMessageSeralizer = MessagesSerializer(data = {'message': data.get('message'), 'author': str(token.user), 'chatroom': {'name': getChatRoom.name, 'nameslug': getChatRoom.nameslug, 'description': getChatRoom.description,'createdBy': {'username': gottenUser.username, 'email': gottenUser.email, 'password': gottenUser.password}}})
         if getMessageSeralizer.is_valid():
             getMessageSeralizer.save()
 

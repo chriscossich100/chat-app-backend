@@ -27,13 +27,13 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatRoom
-        fields = ('name', 'description', 'createdBy')
+        fields = ('name', 'description', 'nameslug', 'createdBy')
     
 
     def create(self, validated_data):
        gottenUser = User.objects.get(username=validated_data['createdBy']['username'])
       
-       submittedChatroom = ChatRoom(name=validated_data['name'], description=validated_data['description'], createdBy = gottenUser)
+       submittedChatroom = ChatRoom(name=validated_data['name'], nameslug=validated_data['nameslug'], description=validated_data['description'], createdBy = gottenUser)
        submitterBabe = submittedChatroom.save()
        return submittedChatroom
 
