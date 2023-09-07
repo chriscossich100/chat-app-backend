@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,14 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$g#4&hk0s^-+58qldtqx6exhcv*&wm2fbmhorr8^54_qv8hoe8'
+# SECRET_KEY = 'django-insecure-$g#4&hk0s^-+58qldtqx6exhcv*&wm2fbmhorr8^54_qv8hoe8'
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'cossich-chat-backend-87ab3da14cd7.herokuapp.com',
-    'localhost'
+    os.environ.get('ALLOWED_HOSTS_BACKEND'),
+    'localhost',
+    os.environ.get('ALLOWED_HOSTS_FRONTEND') #this allows our production frontend communicate with our backend
 ]
 
 
@@ -73,8 +81,7 @@ MIDDLEWARE = [
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'https://cossich-chat-app.vercel.app/'
-    'http://10.120.245.208:3000'
+    os.environ.get('ALLOWED_HOSTS_FRONTEND')
 ]
 
 CSRF_COOKIE_SECURE = False
@@ -112,16 +119,11 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': 'cossichbackend',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'Gugu9000!',
-        # 'HOST': 'localhost',
-        # 'PORT': '5432' #this is the default port to run the postgres database
-        'HOST': 'ec2-35-169-11-108.compute-1.amazonaws.com',
-        'NAME': 'd77dsenqmelgoa',
-        'USER': 'qfdcivanfotsht',
-        'PASSWORD': '0373b9d58162b0b7539517d67669d86330f78c191c77905c12c87d4542a61852',
-        'PORT': '5432'
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'DB_PORT': os.environ.get('DB_PORT')
     }
 }
 
