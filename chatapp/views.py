@@ -151,7 +151,7 @@ class GettingMessages(APIView):
             #check to see if certain chat room exists: if it doesn't run the exception
             chatroom = ChatRoom.objects.get(nameslug=specific_chat_room)
             print(chatroom.name)
-            quickfilter = Messages.objects.filter(chatroom__name = chatroom.name)
+            quickfilter = Messages.objects.order_by('dateCreated').filter(chatroom__name = chatroom.name)
             print(quickfilter)
 
             #this makes sure to send which user you're currently logged in as to arrange the messages appropriately. 
