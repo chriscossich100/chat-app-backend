@@ -131,10 +131,15 @@ class GettingChatRooms(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
+        sentToken = request.headers['Authorization'].replace('Token ', '')
+        token = Token.objects.get(key=sentToken)
+        gottenUser = User.objects.get(username=token.user)
+
+        print(f'gottenUser is {gottenUser.username}')
         chatrooms = ChatRoom.objects.all()
         chatroomsSerializer = ChatRoomSerializer(chatrooms, many=True)
         chatroomData = chatroomsSerializer.data
-        return Response({"message": "you are able to get the chatrooms", "Chatrooms": chatroomData})
+        return Response({"message": "you are able to get the chatrooms", "Chatrooms": chatroomData, "currentUser": gottenUser.username})
     
     
 
